@@ -9,9 +9,15 @@
 #import "CalculatorViewController.h"
 
 @interface CalculatorViewController ()
-
 @end
 
 @implementation CalculatorViewController
 
+@synthesize display = _display;
+
+- (void)viewDidUnload 
+{
+    [self setDisplay:nil];
+    [super viewDidUnload];
+}
 @end
