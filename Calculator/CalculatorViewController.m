@@ -29,9 +29,19 @@
 - (IBAction)digitPressed:(UIButton *)sender 
 {
     NSString *digit = sender.currentTitle;
+    
     if (self.userIsInTheMiddleOfEnteringANumber) {
-    self.display.text = [self.display.text stringByAppendingString:digit];
+        
+        if ([digit isEqualToString:@"."]) {
+            // Only allow a single decimal point (.)
+            NSRange range = [self.display.text rangeOfString:digit];
+            if (range.location != NSNotFound /* was found */) return;
+        }
+        
+        self.display.text = [self.display.text stringByAppendingString:digit];
+        
     } else {
+        if ([digit isEqualToString:@"."]) digit = [@"0" stringByAppendingString:digit];
         self.display.text = digit;
         self.userIsInTheMiddleOfEnteringANumber = YES;
     }
