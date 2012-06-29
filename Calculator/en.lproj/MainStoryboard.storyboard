@@ -259,7 +259,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="digitPressed:" destination="2" eventType="touchUpInside" id="JF6-mp-1eT"/>
+                                    <action selector="decimalPointPressed" destination="2" eventType="touchUpInside" id="U2x-mQ-i0D"/>
                                 </connections>
                             </button>
                         </subviews>
