@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		490F36E7159D380D00FA2D6A /* CalculatorBrain.m in Sources */ = {isa = PBXBuildFile; fileRef = 490F36E6159D380D00FA2D6A /* CalculatorBrain.m */; };
 		49CC79AB159BF75E00231FD6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CC79AA159BF75E00231FD6 /* UIKit.framework */; };
 		49CC79AD159BF75E00231FD6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CC79AC159BF75E00231FD6 /* Foundation.framework */; };
 		49CC79AF159BF75E00231FD6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CC79AE159BF75E00231FD6 /* CoreGraphics.framework */; };
@@ -18,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		490F36E5159D380D00FA2D6A /* CalculatorBrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorBrain.h; sourceTree = "<group>"; };
+		490F36E6159D380D00FA2D6A /* CalculatorBrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorBrain.m; sourceTree = "<group>"; };
 		49CC79A6159BF75E00231FD6 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49CC79AA159BF75E00231FD6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49CC79AC159BF75E00231FD6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -80,6 +83,8 @@
 				49CC79B9159BF75E00231FD6 /* CalculatorAppDelegate.h */,
 				49CC79BA159BF75E00231FD6 /* CalculatorAppDelegate.m */,
 				49CC79BC159BF75E00231FD6 /* MainStoryboard.storyboard */,
+				490F36E5159D380D00FA2D6A /* CalculatorBrain.h */,
+				490F36E6159D380D00FA2D6A /* CalculatorBrain.m */,
 				49CC79BF159BF75E00231FD6 /* CalculatorViewController.h */,
 				49CC79C0159BF75E00231FD6 /* CalculatorViewController.m */,
 				49CC79B1159BF75E00231FD6 /* Supporting Files */,
@@ -165,6 +170,7 @@
 				49CC79B7159BF75E00231FD6 /* main.m in Sources */,
 				49CC79BB159BF75E00231FD6 /* CalculatorAppDelegate.m in Sources */,
 				49CC79C1159BF75E00231FD6 /* CalculatorViewController.m in Sources */,
+				490F36E7159D380D00FA2D6A /* CalculatorBrain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +282,7 @@
 				49CC79C6159BF75E00231FD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
