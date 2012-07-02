@@ -73,4 +73,9 @@
     return result;
 }
 
+- (void)reset 
+{
+    [self.operandStack removeAllObjects];
+}
+
 @end
