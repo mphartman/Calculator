@@ -17,6 +17,7 @@
 @implementation CalculatorViewController
 
 @synthesize display = _display;
+@synthesize history = _history;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
 
@@ -58,12 +59,14 @@
         [self enterPressed];
     }
     NSString *operation = sender.currentTitle;
+    self.history.text = [self.history.text stringByAppendingFormat:@" %@", operation];
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g", result];
 }
 
 - (IBAction)enterPressed 
 {
+    self.history.text = [self.history.text stringByAppendingFormat:@" %@", self.display.text];
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
 }

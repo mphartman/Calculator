@@ -322,15 +322,23 @@
                                     <action selector="decimalPointPressed" destination="2" eventType="touchUpInside" id="U2x-mQ-i0D"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="right" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="EwR-DY-5wN">
+                                <rect key="frame" x="20" y="5" width="280" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="display" destination="htT-Lc-rqW" id="vrs-dL-aG1"/>
+                        <outlet property="history" destination="EwR-DY-5wN" id="DpN-IG-kSb"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="137" y="41"/>
+            <point key="canvasLocation" x="-88" y="3"/>
         </scene>
     </scenes>
     <classes>
@@ -338,6 +346,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CalculatorViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="display" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="history" candidateClass="UILabel"/>
             </relationships>
         </class>
     </classes>
