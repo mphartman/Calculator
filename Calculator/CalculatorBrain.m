@@ -66,6 +66,8 @@
         result = sqrt([self popOperand]);
     }
     
+    if (isnan(result) == FP_NAN) result = 0;
+    
     [self pushOperand:result];
     
     return result;
