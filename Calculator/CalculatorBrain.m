@@ -43,18 +43,99 @@
     [self.programStack removeAllObjects];
 }
 
-+ (NSString *)descriptionOfProgram:(id)program 
++ (BOOL)isBinaryOperation:(NSString *)operation
 {
-    return @"TODO";
+    NSSet *binaryOperations = [[NSSet alloc] initWithObjects:@"+", @"-", @"*", @"/", nil];
+    return [binaryOperations containsObject:operation];
 }
 
-+ (double)runProgram:(id)program
++ (BOOL)isUnaryOperation:(NSString *)operation
+{
+    NSSet *unaryOperations = [[NSSet alloc] initWithObjects:@"sin", @"cos", @"sqrt", nil];
+    return [unaryOperations containsObject:operation];
+}
+
++ (BOOL)isNoOpOperation:(NSString *)operation
+{
+    NSSet *noOpOperations = [[NSSet alloc] initWithObjects:@"π", nil];
+    return [noOpOperations containsObject:operation];
+}
+
++ (BOOL)isVariable:(NSString *)operation
+{
+    // TODO: Implement variable support
+    return NO;
+}
+
++ (BOOL)isOperation:(NSString *)operation
+{
+    return [self isBinaryOperation:operation] || [self isUnaryOperation:operation] || [self isNoOpOperation:operation];
+}
+
++ (NSString *)descriptionOfTopOfStack:(NSMutableArray *)stack
+{
+    NSDictionary *precedenceByOperation = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"+", @"1", @"-", @"10", @"*", @"10", @"/", nil];
+    
+    NSString *result;
+    
+    id topOfStack = [stack lastObject];
+    if (topOfStack) [stack removeLastObject];
+    
+    if ([topOfStack isKindOfClass:[NSNumber class]]) {
+        return [topOfStack description];
+    }
+    else if ([topOfStack isKindOfClass:[NSString class]]) {
+        NSString *operation = topOfStack;
+        if ([self isBinaryOperation:operation]) {
+            int currentOperationPrecedence = [[precedenceByOperation objectForKey:operation] intValue];
+            
+            id secondOperandObj = [stack lastObject];
+            NSString *secondOperand = [self descriptionOfTopOfStack:stack];
+            if ([self isBinaryOperation:secondOperandObj]) {
+                int operandPrecedence = [[precedenceByOperation objectForKey:secondOperandObj] intValue];
+                if (operandPrecedence < currentOperationPrecedence) {
+                    secondOperand = [NSString stringWithFormat:@"(%@)", secondOperand];
+                }
+            }
+            
+            id firstOperandObj = [stack lastObject];
+            NSString *firstOperand = [self descriptionOfTopOfStack:stack];
+            if ([self isBinaryOperation:firstOperandObj]) {
+                int operandPrecedence = [[precedenceByOperation objectForKey:firstOperandObj] intValue];
+                if (operandPrecedence < currentOperationPrecedence) {
+                    firstOperand = [NSString stringWithFormat:@"(%@)", firstOperand];
+                }
+            }
+            
+            result = [NSString stringWithFormat:@"%@ %@ %@", firstOperand, operation, secondOperand];
+        }
+        else if ([self isUnaryOperation:operation]) {
+            result = [NSString stringWithFormat:@"%@(%@)", operation, [self descriptionOfTopOfStack:stack]];
+        }
+        else if ([self isNoOpOperation:operation] || [self isVariable:operation]) {
+            result = operation;
+        }
+    }
+    
+    return result;
+}
+
++ (NSString *)descriptionOfProgram:(id)program 
 {
     NSMutableArray *stack;
     if ([program isKindOfClass:[NSArray class]]) {
         stack = [program mutableCopy];
     }
-    return [self popOperandOffStack:stack];
+    
+    NSString *description = @"";
+    while (stack.count) {
+        description = [description stringByAppendingString:[self descriptionOfTopOfStack:stack]];
+        if (stack.count) {
+            description = [description stringByAppendingString:@", "];
+        }
+    }
+    return description;
+    
 }
 
 + (double)popOperandOffStack:(NSMutableArray *)stack
@@ -103,6 +184,15 @@
     }
     
     return result;
+}
+
++ (double)runProgram:(id)program
+{
+    NSMutableArray *stack;
+    if ([program isKindOfClass:[NSArray class]]) {
+        stack = [program mutableCopy];
+    }
+    return [self popOperandOffStack:stack];
 }
 
 @end
