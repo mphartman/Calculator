@@ -32,6 +32,13 @@
     [self.programStack addObject:[NSNumber numberWithDouble:operand]];
 }
 
+- (void)pushVariableOperand:(NSString *)variableName
+{
+    if ([CalculatorBrain isVariable:variableName]) {
+        [self.programStack addObject:variableName];
+    }
+}
+
 - (double)performOperation:(NSString *)operation
 {
     [self.programStack addObject:operation];
@@ -61,15 +68,14 @@
     return [noOpOperations containsObject:operation];
 }
 
-+ (BOOL)isVariable:(NSString *)operation
-{
-    // TODO: Implement variable support
-    return NO;
-}
-
 + (BOOL)isOperation:(NSString *)operation
 {
     return [self isBinaryOperation:operation] || [self isUnaryOperation:operation] || [self isNoOpOperation:operation];
+}
+
++ (BOOL)isVariable:(id)operation
+{
+    return ([operation isKindOfClass:[NSString class]] && ![self isOperation:operation]);
 }
 
 + (NSString *)descriptionOfTopOfStack:(NSMutableArray *)stack
@@ -90,6 +96,7 @@
             int currentOperationPrecedence = [[precedenceByOperation objectForKey:operation] intValue];
             
             id secondOperandObj = [stack lastObject];
+            if (!secondOperandObj) return @"";
             NSString *secondOperand = [self descriptionOfTopOfStack:stack];
             if ([self isBinaryOperation:secondOperandObj]) {
                 int operandPrecedence = [[precedenceByOperation objectForKey:secondOperandObj] intValue];
@@ -99,6 +106,7 @@
             }
             
             id firstOperandObj = [stack lastObject];
+            if (!firstOperandObj) return @"";
             NSString *firstOperand = [self descriptionOfTopOfStack:stack];
             if ([self isBinaryOperation:firstOperandObj]) {
                 int operandPrecedence = [[precedenceByOperation objectForKey:firstOperandObj] intValue];
@@ -188,11 +196,56 @@
 
 + (double)runProgram:(id)program
 {
+    return [self runProgram:program usingVariableValues:nil];
+}
+
++ (double)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues
+{
     NSMutableArray *stack;
     if ([program isKindOfClass:[NSArray class]]) {
         stack = [program mutableCopy];
     }
+
+    // replace variable symbols in stack with their
+    // matching values from variableValues.
+    // if no match, use zero for variable value
+    for (int i = 0; i < stack.count; i++) {
+        id stackElement = [stack objectAtIndex:i];
+        if ([self isVariable:stackElement]) {
+            id value;
+            if ((value = [variableValues objectForKey:stackElement])) {
+                [stack replaceObjectAtIndex:i withObject:value];
+            } else {
+                [stack replaceObjectAtIndex:i withObject:[NSNumber numberWithDouble:0.0f]];
+            }
+        }
+    }
+    
+    NSLog(@"%@", stack);
+    
     return [self popOperandOffStack:stack];
+    
+}
+
++ (NSSet *)variablesUsedInProgram:(id)program
+{
+    NSMutableArray *stack;
+    if ([program isKindOfClass:[NSArray class]]) {
+        stack = [program mutableCopy];
+    }
+    
+    NSMutableSet *variables = [[NSMutableSet alloc] init];
+    for (id stackElement in stack) {
+        if ([self isVariable:stackElement]) {
+            [variables addObject:stackElement];
+        }
+    }
+    
+    if (variables.count) {
+        return variables;
+    }
+    return nil;
+    
 }
 
 @end

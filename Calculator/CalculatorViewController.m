@@ -12,14 +12,17 @@
 @interface CalculatorViewController ()
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
 @property (nonatomic, strong) CalculatorBrain *brain;
+@property (nonatomic, strong) NSDictionary *testVariableValues;
 @end
 
 @implementation CalculatorViewController
 
 @synthesize display = _display;
 @synthesize history = _history;
+@synthesize variableDisplay = _variableDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
+@synthesize testVariableValues = _testVariableValues;
 
 - (CalculatorBrain *)brain
 {
@@ -27,15 +30,22 @@
     return _brain;
 }
 
+- (void)updateDisplay:(NSString *)text append:(BOOL)append
+{
+    if (append) {
+        self.display.text = [self.display.text stringByAppendingString:text];
+    } else {
+        self.display.text = text;
+    }
+}
+
 - (IBAction)digitPressed:(UIButton *)sender 
 {
     NSString *digit = sender.currentTitle;
-    
     if (self.userIsInTheMiddleOfEnteringANumber) {
-        self.display.text = [self.display.text stringByAppendingString:digit];
-        
+        [self updateDisplay:digit append:YES];
     } else {
-        self.display.text = digit;
+        [self updateDisplay:digit append:NO];
         self.userIsInTheMiddleOfEnteringANumber = YES;
     }
 }
@@ -45,10 +55,10 @@
     if (self.userIsInTheMiddleOfEnteringANumber) {
         NSRange range = [self.display.text rangeOfString:@"."];
         if (range.location == NSNotFound) {
-            self.display.text = [self.display.text stringByAppendingString:@"."];
+            [self updateDisplay:@"." append:YES];
         }
     } else {
-        self.display.text = @"0.";
+        [self updateDisplay:@"0." append:NO];
         self.userIsInTheMiddleOfEnteringANumber = YES;
     }
 }
@@ -61,7 +71,7 @@
     NSString *operation = sender.currentTitle;
     double result = [self.brain performOperation:operation];
     self.history.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
-    self.display.text = [NSString stringWithFormat:@"%g", result];
+    [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];
 }
 
 - (IBAction)enterPressed 
@@ -74,14 +84,70 @@
 {
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.history.text = @"";
-    self.display.text = @"0";
+    [self updateDisplay:@"0" append:NO];
     [self.brain clear];
+}
+
+- (IBAction)variablePressed:(UIButton *)sender 
+{
+    if (self.userIsInTheMiddleOfEnteringANumber) {
+        [self enterPressed];
+    }
+    NSString *variable = sender.currentTitle;
+    [self.brain pushVariableOperand:variable];
+}
+
+- (void)updateVariablesDisplay
+{
+    self.variableDisplay.text = @"";
+    
+    NSSet *variablesInUse = [CalculatorBrain variablesUsedInProgram:self.brain.program];
+    if (variablesInUse) {
+        for (NSString *variable in variablesInUse) {
+            
+            if ([self.variableDisplay.text length] > 0) {
+                self.variableDisplay.text = [self.variableDisplay.text stringByAppendingString:@" "];
+            }
+            
+            NSString *value = [[self.testVariableValues valueForKey:variable] description];
+            
+            if (!value) value = @"0";
+            
+            self.variableDisplay.text = [self.variableDisplay.text stringByAppendingString: [NSString stringWithFormat:@"%@ = %@", variable, value]];
+        }
+    }
+}
+
+- (void)runProgramWithVariables
+{
+    [self updateVariablesDisplay];
+    double result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
+    [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];    
+}
+
+- (IBAction)testOnePressed 
+{
+    self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:3.0], @"x", [NSNumber numberWithDouble:2.3], @"y", [NSNumber numberWithDouble:42.0], @"z", nil];
+    [self runProgramWithVariables];
+}
+
+- (IBAction)testTwoPressed 
+{
+    self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:0.0], @"x", [NSNumber numberWithDouble:-14], @"y", nil];
+    [self runProgramWithVariables];
+}
+
+- (IBAction)testThreePressed 
+{
+    self.testVariableValues = nil;
+    [self runProgramWithVariables];
 }
 
 - (void)viewDidUnload 
 {
     [self setDisplay:nil];
     [self setHistory:nil];
+    [self setVariableDisplay:nil];
     [super viewDidUnload];
 }
 @end
