@@ -220,9 +220,7 @@
             }
         }
     }
-    
-    NSLog(@"%@", stack);
-    
+        
     return [self popOperandOffStack:stack];
     
 }
