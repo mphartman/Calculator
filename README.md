@@ -1,4 +1,4 @@
 Calculator
 ==========
 
-CS193P Assignment
+CS193P Assignment 1 and 2
