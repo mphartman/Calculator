@@ -50,6 +50,11 @@
     [self.programStack removeAllObjects];
 }
 
+- (void)undo
+{
+    if (self.programStack.count) [self.programStack removeLastObject];
+}
+
 + (BOOL)isBinaryOperation:(NSString *)operation
 {
     NSSet *binaryOperations = [[NSSet alloc] initWithObjects:@"+", @"-", @"*", @"/", nil];

@@ -18,6 +18,8 @@
 
 - (void)clear;
 
+- (void)undo;
+
 @property (readonly) id program;
 
 + (double)runProgram:(id)program;
