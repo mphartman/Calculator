@@ -30,6 +30,11 @@
     return _brain;
 }
 
+- (void)updateDisplay
+{
+    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];    
+}
+
 - (void)updateDisplay:(NSString *)text append:(BOOL)append
 {
     if (append) {
@@ -37,6 +42,7 @@
     } else {
         self.display.text = text;
     }
+    [self updateDisplay];
 }
 
 - (IBAction)digitPressed:(UIButton *)sender 
@@ -70,7 +76,6 @@
     }
     NSString *operation = sender.currentTitle;
     double result = [self.brain performOperation:operation];
-    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
     [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];
 }
 
@@ -78,14 +83,14 @@
 {
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
+    [self updateDisplay];
 }
 
 - (IBAction)clearPressed 
 {
-    self.userIsInTheMiddleOfEnteringANumber = NO;
-    self.programDisplay.text = @"";
-    [self updateDisplay:@"0" append:NO];
     [self.brain clear];
+    self.userIsInTheMiddleOfEnteringANumber = NO;
+    [self updateDisplay:@"0" append:NO];
 }
 
 - (IBAction)variablePressed:(UIButton *)sender 
@@ -95,6 +100,7 @@
     }
     NSString *variable = sender.currentTitle;
     [self.brain pushVariableOperand:variable];
+    [self updateDisplay];
 }
 
 - (void)updateVariablesDisplay
