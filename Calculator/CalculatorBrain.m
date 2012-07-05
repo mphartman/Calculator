@@ -38,7 +38,7 @@
     return [CalculatorBrain runProgram:self.program];
 }
 
-- (void)reset 
+- (void)clear 
 {
     [self.programStack removeAllObjects];
 }

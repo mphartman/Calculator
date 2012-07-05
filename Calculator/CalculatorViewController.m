@@ -75,7 +75,7 @@
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.history.text = @"";
     self.display.text = @"0";
-    [self.brain reset];
+    [self.brain clear];
 }
 
 - (void)viewDidUnload 
