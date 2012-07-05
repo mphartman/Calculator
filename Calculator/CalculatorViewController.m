@@ -122,7 +122,7 @@
 {
     if (self.userIsInTheMiddleOfEnteringANumber) {
         if ([self.display.text length] > 0) {
-            NSString *displayText = [self.display.text substringFromIndex:1];
+            NSString *displayText = [self.display.text substringToIndex:[self.display.text length] - 1];
             [self updateDisplay:displayText append:NO];            
         } 
         if ([self.display.text length] == 0) {
@@ -131,10 +131,10 @@
         }
     } else {
         [self.brain undo];
+        double result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
+        [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];
+        self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
     }
-    double result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
-    [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];
-    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
 }
 
 - (void)runProgramWithVariables
