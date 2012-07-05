@@ -18,7 +18,7 @@
 @implementation CalculatorViewController
 
 @synthesize display = _display;
-@synthesize history = _history;
+@synthesize programDisplay = _programDisplay;
 @synthesize variableDisplay = _variableDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
@@ -70,7 +70,7 @@
     }
     NSString *operation = sender.currentTitle;
     double result = [self.brain performOperation:operation];
-    self.history.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
+    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
     [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];
 }
 
@@ -83,7 +83,7 @@
 - (IBAction)clearPressed 
 {
     self.userIsInTheMiddleOfEnteringANumber = NO;
-    self.history.text = @"";
+    self.programDisplay.text = @"";
     [self updateDisplay:@"0" append:NO];
     [self.brain clear];
 }
@@ -146,8 +146,9 @@
 - (void)viewDidUnload 
 {
     [self setDisplay:nil];
-    [self setHistory:nil];
+    [self setProgramDisplay:nil];
     [self setVariableDisplay:nil];
+    [self setBrain:nil];
     [super viewDidUnload];
 }
 @end

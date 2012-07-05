@@ -446,12 +446,12 @@
                     </view>
                     <connections>
                         <outlet property="display" destination="htT-Lc-rqW" id="vrs-dL-aG1"/>
-                        <outlet property="history" destination="EwR-DY-5wN" id="DpN-IG-kSb"/>
+                        <outlet property="programDisplay" destination="EwR-DY-5wN" id="8Ba-kt-1MP"/>
                         <outlet property="variableDisplay" destination="TGm-1D-gEt" id="hcY-ym-BfK"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="-300" y="-7"/>
+            <point key="canvasLocation" x="-412" y="-48"/>
         </scene>
     </scenes>
     <classes>
@@ -459,7 +459,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CalculatorViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="display" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="history" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="programDisplay" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="variableDisplay" candidateClass="UILabel"/>
             </relationships>
         </class>
