@@ -12,17 +12,14 @@
 @interface CalculatorViewController ()
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
 @property (nonatomic, strong) CalculatorBrain *brain;
-@property (nonatomic, strong) NSDictionary *testVariableValues;
 @end
 
 @implementation CalculatorViewController
 
 @synthesize display = _display;
 @synthesize programDisplay = _programDisplay;
-@synthesize variableDisplay = _variableDisplay;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize brain = _brain;
-@synthesize testVariableValues = _testVariableValues;
 
 - (CalculatorBrain *)brain
 {
@@ -30,7 +27,7 @@
     return _brain;
 }
 
-- (void)updateDisplay
+- (void)updateProgramDisplay
 {
     self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];    
 }
@@ -42,7 +39,7 @@
     } else {
         self.display.text = text;
     }
-    [self updateDisplay];
+    [self updateProgramDisplay];
 }
 
 - (IBAction)digitPressed:(UIButton *)sender 
@@ -83,7 +80,7 @@
 {
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
-    [self updateDisplay];
+    [self updateProgramDisplay];
 }
 
 - (IBAction)clearPressed 
@@ -100,28 +97,7 @@
     }
     NSString *variable = sender.currentTitle;
     [self.brain pushVariableOperand:variable];
-    [self updateDisplay];
-}
-
-- (void)updateVariablesDisplay
-{
-    self.variableDisplay.text = @"";
-    
-    NSSet *variablesInUse = [CalculatorBrain variablesUsedInProgram:self.brain.program];
-    if (variablesInUse) {
-        for (NSString *variable in variablesInUse) {
-            
-            if ([self.variableDisplay.text length] > 0) {
-                self.variableDisplay.text = [self.variableDisplay.text stringByAppendingString:@" "];
-            }
-            
-            NSString *value = [[self.testVariableValues valueForKey:variable] description];
-            
-            if (!value) value = @"0";
-            
-            self.variableDisplay.text = [self.variableDisplay.text stringByAppendingString: [NSString stringWithFormat:@"%@ = %@", variable, value]];
-        }
-    }
+    [self updateProgramDisplay];
 }
 
 - (IBAction)undoPressed 
@@ -137,42 +113,16 @@
         }
     } else {
         [self.brain undo];
-        double result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
+        double result = [CalculatorBrain runProgram:self.brain.program];
         [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];
         self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.brain.program];
     }
-}
-
-- (void)runProgramWithVariables
-{
-    [self updateVariablesDisplay];
-    double result = [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues];
-    [self updateDisplay:[NSString stringWithFormat:@"%g", result] append:NO];    
-}
-
-- (IBAction)testOnePressed 
-{
-    self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:3.0], @"x", [NSNumber numberWithDouble:2.3], @"y", [NSNumber numberWithDouble:42.0], @"z", nil];
-    [self runProgramWithVariables];
-}
-
-- (IBAction)testTwoPressed 
-{
-    self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:0.0], @"x", [NSNumber numberWithDouble:-14], @"y", nil];
-    [self runProgramWithVariables];
-}
-
-- (IBAction)testThreePressed 
-{
-    self.testVariableValues = nil;
-    [self runProgramWithVariables];
 }
 
 - (void)viewDidUnload 
 {
     [self setDisplay:nil];
     [self setProgramDisplay:nil];
-    [self setVariableDisplay:nil];
     [self setBrain:nil];
     [super viewDidUnload];
 }
