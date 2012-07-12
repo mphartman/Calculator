@@ -386,7 +386,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="fHL-6u-kv7" kind="push" identifier="graph" id="jpB-Un-Yg4"/>
+                                    <action selector="graphPressed" destination="2" eventType="touchUpInside" id="w8L-r7-wyD"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -396,6 +396,7 @@
                     <connections>
                         <outlet property="display" destination="htT-Lc-rqW" id="vrs-dL-aG1"/>
                         <outlet property="programDisplay" destination="EwR-DY-5wN" id="8Ba-kt-1MP"/>
+                        <segue destination="fHL-6u-kv7" kind="push" identifier="ShowGraph" id="P7K-iK-euj"/>
                     </connections>
                 </viewController>
             </objects>
@@ -429,8 +430,15 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="dvI-1Q-MwC" customClass="GraphView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="r7F-GT-7He">
+                                <rect key="frame" x="20" y="0.0" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="redraw" id="dvI-1Q-MwC" customClass="GraphView">
+                                <rect key="frame" x="0.0" y="37" width="320" height="379"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -442,6 +450,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="graphView" destination="dvI-1Q-MwC" id="ozv-Sf-sNh"/>
+                        <outlet property="programDisplay" destination="r7F-GT-7He" id="CBd-S6-eha"/>
                     </connections>
                 </viewController>
             </objects>
@@ -458,11 +467,15 @@
         </class>
         <class className="GraphView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="dataSource"/>
+            </relationships>
         </class>
         <class className="GraphViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="programDisplay" candidateClass="UILabel"/>
             </relationships>
         </class>
     </classes>

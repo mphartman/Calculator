@@ -120,6 +120,19 @@
     }
 }
 
+- (IBAction)graphPressed 
+{
+    [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ShowGraph"]) {
+        GraphViewController *graphViewController = segue.destinationViewController;
+        graphViewController.program = self.brain.program;
+    }
+}
+
 - (void)viewDidUnload 
 {
     [self setDisplay:nil];

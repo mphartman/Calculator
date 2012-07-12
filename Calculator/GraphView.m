@@ -10,6 +10,8 @@
 
 @implementation GraphView
 
+@synthesize dataSource = _dataSource;
+
 - (void)setup
 {
     // Initialization code
