@@ -28,9 +28,16 @@
     self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
 }
 
-- (id)getProgramForGraphView:(GraphView *)sender
+- (void)setGraphView:(GraphView *)graphView
 {
-    return self.program;
+    _graphView = graphView;
+    self.graphView.dataSource = self;
+}
+
+- (double)verticalPointForGraphView:(GraphView *)sender atHorizontalPoint:(double)x
+{
+    NSDictionary *variableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:x], @"x", nil];
+    return [CalculatorBrain runProgram:self.program usingVariableValues:variableValues];
 }
 
 @end

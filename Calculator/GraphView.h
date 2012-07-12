@@ -12,7 +12,7 @@
 
 @protocol GraphViewDataSource <NSObject>
 
-- (id)getProgramForGraphView:(GraphView *)sender;
+- (double)verticalPointForGraphView:(GraphView *)sender atHorizontalPoint:(double) x;
 
 @end
 
