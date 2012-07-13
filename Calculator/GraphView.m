@@ -41,8 +41,14 @@
 }
 
 - (void)setup
-{
-    // Initialization code
+{    
+    // default to the center
+    CGPoint midPoint; // center of our bounds in our coordinate system
+    midPoint.x = self.bounds.origin.x + self.bounds.size.width/2;
+    midPoint.y = self.bounds.origin.y + self.bounds.size.height/2;
+    self.origin = midPoint;
+    
+    self.scale = 40.0;    
 }
 
 - (void)awakeFromNib
@@ -89,25 +95,31 @@
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    /*
-    CGPoint midPoint; // center of our bounds in our coordinate system
-    midPoint.x = self.bounds.origin.x + self.bounds.size.width/2;
-    midPoint.y = self.bounds.origin.y + self.bounds.size.height/2;
-    */
-    
+
     [AxesDrawer drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];
-    
-    CGContextSetLineWidth(context, 2.0);
+        
     [[UIColor redColor] setStroke];
     
     CGContextBeginPath(context);
-    CGContextMoveToPoint(context, self.origin.x, self.origin.y);
-    for (double x = 0; x < 100; x++) {
+    
+    // start at left edge
+    CGContextMoveToPoint(context, rect.origin.x, self.origin.y);
+    
+    // translate to graph coordinate system to get all the X values
+    double startX = floor((rect.origin.x - self.origin.x) / self.scale);
+    double   endX = floor((rect.origin.x + self.bounds.size.width) / self.scale);
+    double   addX = (self.contentScaleFactor / 10) / self.scale;
+    for (double x = startX; x < endX; x += addX) {
+        
         double y = [self.dataSource verticalPointForGraphView:self atHorizontalPoint:x];
-        CGContextAddLineToPoint(context, x, y);
+                
+        // convert to view's coordindate system
+        double x2 = self.origin.x + (x  * self.scale);  // x increases left to right
+        double y2 = self.origin.y - (y  * self.scale);  // y increases top to bottom
+        
+        CGContextAddLineToPoint(context, x2, y2);
     }
-    CGContextDrawPath(context, kCGPathStroke);
+    CGContextStrokePath(context);
     
 }
 
