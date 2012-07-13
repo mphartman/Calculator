@@ -45,4 +45,8 @@
     return [CalculatorBrain runProgram:self.program usingVariableValues:variableValues];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return !(toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+}
+
 @end

@@ -108,7 +108,7 @@
     // translate to graph coordinate system to get all the X values
     double startX = floor((rect.origin.x - self.origin.x) / self.scale);
     double   endX = floor((rect.origin.x + self.bounds.size.width) / self.scale);
-    double   addX = (self.contentScaleFactor / 10) / self.scale;
+    double   addX = (1 / (self.contentScaleFactor * 5)) / self.scale;
     for (double x = startX; x < endX; x += addX) {
         
         double y = [self.dataSource verticalPointForGraphView:self atHorizontalPoint:x];
@@ -117,7 +117,9 @@
         double x2 = self.origin.x + (x  * self.scale);  // x increases left to right
         double y2 = self.origin.y - (y  * self.scale);  // y increases top to bottom
         
-        CGContextAddLineToPoint(context, x2, y2);
+        if (CGRectContainsPoint(rect, CGPointMake(x2, y2))) {
+            CGContextAddLineToPoint(context, x2, y2);
+        }
     }
     CGContextStrokePath(context);
     
