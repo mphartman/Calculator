@@ -32,6 +32,11 @@
 {
     _graphView = graphView;
     self.graphView.dataSource = self;
+    [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];
+    [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pan:)]];
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(tap:)];
+    tapGestureRecognizer.numberOfTapsRequired = 3;
+    [self.graphView addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (double)verticalPointForGraphView:(GraphView *)sender atHorizontalPoint:(double)x
