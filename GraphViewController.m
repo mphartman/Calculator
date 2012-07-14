@@ -26,6 +26,23 @@
 - (void)viewDidLoad 
 {
     self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
+    
+    // restore the view's origin and scale from preferences
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    CGFloat originX = [prefs floatForKey:@"origin.x"];
+    CGFloat originY = [prefs floatForKey:@"origin.y"];
+    self.graphView.origin = CGPointMake(originX, originY);
+    self.graphView.scale = [prefs floatForKey:@"scale"];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    // save view's origin and scale to user preferences
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setFloat:self.graphView.origin.x forKey:@"origin.x"];
+    [prefs setFloat:self.graphView.origin.y forKey:@"origin.y"];
+    [prefs setFloat:self.graphView.scale forKey:@"scale"];
+    [prefs synchronize];
 }
 
 - (void)setGraphView:(GraphView *)graphView

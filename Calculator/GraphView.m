@@ -15,7 +15,7 @@
 @synthesize scale = _scale;
 @synthesize origin = _origin;
 
-#define DEFAULT_SCALE 0.90
+#define DEFAULT_SCALE 10.0
 
 - (CGFloat)scale
 {
@@ -36,19 +36,15 @@
 
 - (void)setOrigin:(CGPoint)origin
 {
-    _origin = origin;
-    [self setNeedsDisplay];
+    if (origin.x != _origin.x || origin.y != _origin.y) {
+        _origin = origin;
+        [self setNeedsDisplay];
+    }
 }
 
 - (void)setup
 {    
-    // default to the center
-    CGPoint midPoint; // center of our bounds in our coordinate system
-    midPoint.x = self.bounds.origin.x + self.bounds.size.width/2;
-    midPoint.y = self.bounds.origin.y + self.bounds.size.height/2;
-    self.origin = midPoint;
-    
-    self.scale = 40.0;    
+    // Initiliazation code here
 }
 
 - (void)awakeFromNib
