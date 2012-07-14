@@ -98,28 +98,25 @@
 
     [AxesDrawer drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];
         
-    [[UIColor redColor] setStroke];
+    [[UIColor blueColor] setStroke];
     
     CGContextBeginPath(context);
     
     // start at left edge
     CGContextMoveToPoint(context, rect.origin.x, self.origin.y);
-    
-    // translate to graph coordinate system to get all the X values
-    double startX = floor((rect.origin.x - self.origin.x) / self.scale);
-    double   endX = floor((rect.origin.x + self.bounds.size.width) / self.scale);
-    double   addX = (1 / (self.contentScaleFactor * 5)) / self.scale;
-    for (double x = startX; x < endX; x += addX) {
+
+    // iterate over each horizontal pixel and compute the vertical value from dataSource
+    // plot the resulting point
+    for (double i = rect.origin.x; i < ((rect.origin.x + rect.size.width) * self.contentScaleFactor); i++) {
         
+        double x = (i - self.origin.x) / self.scale;
         double y = [self.dataSource verticalPointForGraphView:self atHorizontalPoint:x];
                 
         // convert to view's coordindate system
-        double x2 = self.origin.x + (x  * self.scale);  // x increases left to right
-        double y2 = self.origin.y - (y  * self.scale);  // y increases top to bottom
+        double j = self.origin.y - (y  * self.scale);  // y increases top to bottom
         
-        if (CGRectContainsPoint(rect, CGPointMake(x2, y2))) {
-            CGContextAddLineToPoint(context, x2, y2);
-        }
+        CGContextAddLineToPoint(context, i, j);
+        
     }
     CGContextStrokePath(context);
     
