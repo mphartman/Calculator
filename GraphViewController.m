@@ -25,6 +25,8 @@
 
 - (void)viewDidLoad 
 {
+    [super viewDidLoad];
+    
     self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
     
     // restore the view's origin and scale from preferences
@@ -43,6 +45,16 @@
     [prefs setFloat:self.graphView.origin.y forKey:@"origin.y"];
     [prefs setFloat:self.graphView.scale forKey:@"scale"];
     [prefs synchronize];
+    
+    [super viewDidDisappear:animated];
+}
+
+- (void)viewDidUnload
+{
+    [self setProgram:nil];
+    [self setProgramDisplay:nil];
+    [self setGraphView:nil];
+    [super viewDidUnload];
 }
 
 - (void)setGraphView:(GraphView *)graphView
@@ -62,7 +74,8 @@
     return [CalculatorBrain runProgram:self.program usingVariableValues:variableValues];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+{
     return !(toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
