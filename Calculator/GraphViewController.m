@@ -29,8 +29,7 @@
 {
     if (_program != program) {
         _program = program;
-        self.title = [CalculatorBrain descriptionOfProgram:self.program];
-        self.programDisplayBarButtonItem.title = self.title;
+        self.programDisplayBarButtonItem.title = [CalculatorBrain descriptionOfProgram:self.program];
         [self.graphView setNeedsDisplay];
     }
 }
@@ -102,7 +101,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 {
-    return !(toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+    return YES;
 }
 
 @end

@@ -143,7 +143,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return !(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+    if (!self.splitViewController) {
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+    } else {
+        return YES;
+    }
 }
 
 - (void)viewDidUnload 
