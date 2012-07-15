@@ -42,9 +42,31 @@
     }
 }
 
+- (void)loadPreferences
+{
+    // restore the view's origin and scale from preferences
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    CGFloat originX = [prefs floatForKey:@"origin.x"];
+    CGFloat originY = [prefs floatForKey:@"origin.y"];
+    if (!originX) originX = self.bounds.origin.x + self.bounds.size.width / 2;
+    if (!originY) originY = self.bounds.origin.y + self.bounds.size.height / 2;
+    self.origin = CGPointMake(originX, originY);
+    self.scale = [prefs floatForKey:@"scale"];
+}
+
+- (void)savePreferences
+{
+    // save view's origin and scale to user preferences
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setFloat:self.origin.x forKey:@"origin.x"];
+    [prefs setFloat:self.origin.y forKey:@"origin.y"];
+    [prefs setFloat:self.scale forKey:@"scale"];
+    [prefs synchronize];
+}
+
 - (void)setup
 {    
-    // Initiliazation code here
+    [self loadPreferences];
 }
 
 - (void)awakeFromNib
@@ -67,6 +89,7 @@
         (gesture.state == UIGestureRecognizerStateEnded)) {
         self.scale *= gesture.scale; // adjust our scale
         gesture.scale = 1;           // reset gestures scale to 1 (so future changes are incremental, not cumulative)
+        [self savePreferences];
     }
 }
 
@@ -77,6 +100,7 @@
         CGPoint translation = [gesture translationInView:self];
         self.origin = CGPointMake(self.origin.x + translation.x, self.origin.y + translation.y);
         [gesture setTranslation:CGPointZero inView:self];
+        [self savePreferences];
     }
 }
 
@@ -85,6 +109,7 @@
     if (gesture.state == UIGestureRecognizerStateEnded) {
         CGPoint touchPoint = [gesture locationInView:self];
         self.origin = touchPoint;
+        [self savePreferences];
     }
 }
 
