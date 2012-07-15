@@ -11,23 +11,25 @@
 #import "CalculatorBrain.h"
 
 @interface GraphViewController () <GraphViewDataSource>
-
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
-@property (nonatomic, weak) IBOutlet UILabel *programDisplay;
-
 @end
 
 @implementation GraphViewController
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
-@synthesize programDisplay = _programDisplay;
+
+- (void)setProgram:(id)program 
+{
+    _program = program;
+    [self.graphView setNeedsDisplay];
+}
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
     
-    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
+    self.title = [CalculatorBrain descriptionOfProgram:self.program];
     
     // restore the view's origin and scale from preferences
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -52,7 +54,6 @@
 - (void)viewDidUnload
 {
     [self setProgram:nil];
-    [self setProgramDisplay:nil];
     [self setGraphView:nil];
     [super viewDidUnload];
 }

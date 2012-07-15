@@ -122,7 +122,15 @@
 
 - (IBAction)graphPressed 
 {
-    [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+    if (self.splitViewController) {
+        GraphViewController *vc = [self.splitViewController.viewControllers lastObject];
+        if (![vc isKindOfClass:[GraphViewController class]]) {
+            vc = nil;
+        }
+        vc.program = self.brain.program;
+    } else {
+        [self performSegueWithIdentifier:@"ShowGraph" sender:self];
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -133,6 +141,24 @@
     }
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc 
+   shouldHideViewController:(UIViewController *)vc 
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return !(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+}
+
 - (void)viewDidUnload 
 {
     [self setDisplay:nil];
@@ -140,4 +166,5 @@
     [self setBrain:nil];
     [super viewDidUnload];
 }
+
 @end
