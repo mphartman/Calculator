@@ -42,11 +42,11 @@
             </objects>
             <point key="canvasLocation" x="837" y="378"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Calculator-->
         <scene sceneID="i4R-bs-fZw">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hS0-hA-n5p" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController id="i1G-IH-m2m" sceneMemberID="viewController">
+                <navigationController title="Calculator" id="i1G-IH-m2m" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="eZh-LS-1u1">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -13,6 +13,7 @@
 @interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, weak) UIBarButtonItem *splitViewBarButtonItem;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *programDisplayBarButtonItem;
 @end
 
@@ -26,11 +27,12 @@
 
 - (void)setProgram:(id)program 
 {
-    _program = program;
-    
-    self.title = [CalculatorBrain descriptionOfProgram:self.program];
-    self.programDisplayBarButtonItem.title = self.title;
-    [self.graphView setNeedsDisplay];
+    if (_program != program) {
+        _program = program;
+        self.title = [CalculatorBrain descriptionOfProgram:self.program];
+        self.programDisplayBarButtonItem.title = self.title;
+        [self.graphView setNeedsDisplay];
+    }
 }
 
 - (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
@@ -42,6 +44,13 @@
         self.toolbar.items = toolbarItems;
         _splitViewBarButtonItem = splitViewBarButtonItem;
     }
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.splitViewController.delegate = self;
 }
 
 - (void)viewDidLoad 
@@ -92,10 +101,32 @@
     return [CalculatorBrain runProgram:self.program usingVariableValues:variableValues];
 }
 
+- (BOOL)splitViewController:(UISplitViewController *)svc 
+   shouldHideViewController:(UIViewController *)vc 
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return UIInterfaceOrientationIsPortrait(orientation);
+}
+
+- (void)splitViewController:(UISplitViewController *)svc
+     willHideViewController:(UIViewController *)aViewController
+          withBarButtonItem:(UIBarButtonItem *)barButtonItem
+       forPopoverController:(UIPopoverController *)pc
+{
+    barButtonItem.title = aViewController.title;
+    self.splitViewBarButtonItem = barButtonItem;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc
+     willShowViewController:(UIViewController *)aViewController
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    self.splitViewBarButtonItem = nil;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 {
     return !(toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
-
 
 @end
