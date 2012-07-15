@@ -26,6 +26,7 @@
 		490F36E5159D380D00FA2D6A /* CalculatorBrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorBrain.h; sourceTree = "<group>"; };
 		490F36E6159D380D00FA2D6A /* CalculatorBrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorBrain.m; sourceTree = "<group>"; };
 		4973263415B2FD4100DB3F36 /* iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPad.storyboard; sourceTree = "<group>"; };
+		4973263D15B3101100DB3F36 /* SplitViewBarButtonItemPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewBarButtonItemPresenter.h; sourceTree = "<group>"; };
 		49BD2DF415AE5A950086E65F /* AxesDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AxesDrawer.h; path = ../AxesDrawer.h; sourceTree = "<group>"; };
 		49BD2DF515AE5A950086E65F /* AxesDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AxesDrawer.m; path = ../AxesDrawer.m; sourceTree = "<group>"; };
 		49CC79A6159BF75E00231FD6 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +94,7 @@
 			children = (
 				49CC79BC159BF75E00231FD6 /* iPhone.storyboard */,
 				4973263415B2FD4100DB3F36 /* iPad.storyboard */,
+				4973263D15B3101100DB3F36 /* SplitViewBarButtonItemPresenter.h */,
 				490F36E5159D380D00FA2D6A /* CalculatorBrain.h */,
 				490F36E6159D380D00FA2D6A /* CalculatorBrain.m */,
 				49CC79B9159BF75E00231FD6 /* CalculatorAppDelegate.h */,

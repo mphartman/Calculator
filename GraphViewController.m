@@ -12,24 +12,41 @@
 
 @interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *programDisplayBarButtonItem;
 @end
 
 @implementation GraphViewController
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
+@synthesize toolbar = _toolbar;
+@synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
+@synthesize programDisplayBarButtonItem = _programDisplayBarButtonItem;
 
 - (void)setProgram:(id)program 
 {
     _program = program;
+    
+    self.title = [CalculatorBrain descriptionOfProgram:self.program];
+    self.programDisplayBarButtonItem.title = self.title;
     [self.graphView setNeedsDisplay];
+}
+
+- (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
+{
+    if (splitViewBarButtonItem != _splitViewBarButtonItem) {
+        NSMutableArray *toolbarItems = [self.toolbar.items mutableCopy];
+        if (_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem];
+        if (splitViewBarButtonItem) [toolbarItems insertObject:splitViewBarButtonItem atIndex:0];
+        self.toolbar.items = toolbarItems;
+        _splitViewBarButtonItem = splitViewBarButtonItem;
+    }
 }
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    
-    self.title = [CalculatorBrain descriptionOfProgram:self.program];
     
     // restore the view's origin and scale from preferences
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -79,5 +96,6 @@
 {
     return !(toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
+
 
 @end
